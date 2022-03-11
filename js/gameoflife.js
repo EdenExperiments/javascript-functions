@@ -3,9 +3,7 @@ function seed() {
 }
 
 function same([x, y], [j, k]) {
-  if (x === j && y === k) {
-    return true;
-  }
+  return (x === j && y === k)
 }
 
 // The game state to search for `cell` is passed as the `this` value of the function.
@@ -23,35 +21,27 @@ const corners = (state = []) => {
     return {topRight: [0,0], bottomLeft: [0,0]}
   }
 
-  let smallestX = state[0][0];
-  let largestX = state[0][0];
-  let smallestY = state[0][1];
-  let largestY = state[0][1];
-
-
   const xs = state.map(([x, _]) => x);
   const ys = state.map(([_, y]) => y);
   return {
     topRight: [Math.max(...xs), Math.max(...ys)],
     bottomLeft: [Math.min(...xs), Math.min(...ys)]
-  };
-
+  }
 };
 
 const printCells = (state) => {
 
-  let cornersObject = corners(state);
+  const cornersObject = corners(state);
   let cellString = ""
 
-  for (let i = cornersObject.topRight[0]; i >= cornersObject.bottomLeft[0]; i--) {
-    for (let j = cornersObject.bottomLeft[1]; j <= cornersObject.topRight[1]; j++) {
+  for (let y = cornersObject.topRight[1]; y >= cornersObject.bottomLeft[1]; y--) {
+    for (let x = cornersObject.bottomLeft[0]; x <= cornersObject.topRight[0]; x++) {
 
-      cellString += printCell([i, j], state)
+      cellString += printCell([x, y], state) + " "
     }
 
     cellString += "\n"
   }
-
   return cellString
 };
 
@@ -97,7 +87,6 @@ const calculateNext = (state) => {
       }
     }
   }
-
   return newState
 };
 
@@ -113,9 +102,10 @@ const iterate = (state, iterations) => {
   return gameStates;
 };
 
-const main = (pattern, iterations) => {
+function main(pattern, iterations) {
+
   const allStates = iterate(startPatterns[pattern], iterations);
-  allStates.forEach(r => console.log(printCells(r)));
+  allStates.forEach(element => console.log(printCells(element)));
 };
 
 const startPatterns = {
